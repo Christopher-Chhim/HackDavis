@@ -68,7 +68,7 @@ Zone Mapping:
 - Zone Id: 5 is the Study Start
 - Zone Id: 6 is the Orange Republic
 - Zone Id: 7 is the corridor connecting the bottom left and bottom middle of the mall
-- Zone Id: 8 is the corridor connecting the top left, top right, and bottom right of the mall
+- Zone Id: 8 is the corridor connecting the top left, top right, and bottom right of the mall.
 
 We use parodies of the real world to describe the mall. Please use the names of the stores and corridors to describe the mall.
 """

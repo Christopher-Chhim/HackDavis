@@ -50,8 +50,13 @@ def bfs(start, goal):
                 if nodes[n]["status"] == "open" and nodes[n]
                 ["zone_type"] == "cautious" and n not in visited
             ]
+
             # Only traverse cautious if all other open nodes are closed or dangerous
             if open_cautious_neighbors and all(
                 nodes[n]["zone_type"] != "safe"
                 for n in adjacency[current]
-                if nodes[n]["status"] == "open" and n not in visited)
+                if nodes[n]["status"] == "open" and n not in visited):
+                for neighbor in open_cautious_neighbors:
+                    queue.append((neighbor, path + [neighbor]))
+            
+            return None

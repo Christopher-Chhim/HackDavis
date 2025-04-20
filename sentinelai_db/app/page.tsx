@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import {useState, useEffect, Suspense} from 'react'
-import {Canvas, useFrame} from '@react-three/fiber'
-import {useGLTF, Environment, PresentationControls} from '@react-three/drei'
-import {Button} from '@/components/ui/button'
-import {Card, CardContent} from '@/components/ui/card'
+import { useState, useEffect, Suspense } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useGLTF, Environment, PresentationControls } from '@react-three/drei';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Building,
   Radio,
@@ -16,31 +16,136 @@ import {
   Map,
   MessageSquare,
   Users,
-} from 'lucide-react'
+} from 'lucide-react';
+import { createClient, RealtimeChannel } from '@supabase/supabase-js';
+import MallCanvas from './_components/mall';
 
 // 3D Model component
 function Model(props) {
-  const {scene} = useGLTF('/model.glb')
+  const { scene } = useGLTF('/model.glb');
 
   // Rotate the model slowly
   useFrame((state) => {
-    scene.rotation.y = state.clock.getElapsedTime() * 0.1
-  })
+    scene.rotation.y = state.clock.getElapsedTime() * 0.1;
+  });
 
-  return <primitive object={scene} {...props} />
+  return <primitive object={scene} {...props} />;
 }
 
+interface Zone {
+  id: number;
+  status: 'ok' | 'caution' | 'danger';
+}
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0)
+  const [scrollY, setScrollY] = useState(0);
+  const [doors, setDoors] = useState([]);
+  const [zones, setZones] = useState([]);
+  let doorChannel: RealtimeChannel;
+  let zoneChannel: RealtimeChannel;
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
+      setScrollY(window.scrollY);
+    };
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener('scroll', handleScroll);
+
+    const fetchDoors = async () => {
+      const { data, error } = await supabase
+        .from('doors')
+        .select('*')
+        .order('id', { ascending: true });
+      if (error) {
+        console.error('Error fetching doors:', error);
+      } else {
+        console.log('Doors fetched:', data);
+        setDoors(data);
+      }
+    };
+
+    const fetchZones = async () => {
+      const { data, error } = await supabase
+        .from('zones')
+        .select('*')
+        .order('id', { ascending: true });
+      if (error) {
+        console.error('Error fetching zones:', error);
+      } else {
+        console.log('Zones fetched:', data);
+        setZones(data);
+      }
+    };
+
+    doorChannel = supabase
+      .channel('door-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'doors',
+        },
+        (payload) => {
+          console.log('Door update received:', payload.new);
+          setDoors((prevDoors) =>
+            prevDoors.map((door) =>
+              door.id === (payload.new as Door).id
+                ? (payload.new as Door)
+                : door
+            )
+          );
+        }
+      )
+      .subscribe();
+
+    zoneChannel = supabase
+      .channel('zone-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'zones' },
+        (payload) => {
+          console.log('Zone update received:', payload.new);
+          setZones((prevZones) =>
+            prevZones.map((zone) =>
+              zone.id === (payload.new as Zone).id
+                ? (payload.new as Zone)
+                : zone
+            )
+          );
+        }
+      )
+      .subscribe();
+
+    fetchDoors();
+    fetchZones();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      doorChannel.unsubscribe();
+      zoneChannel.unsubscribe();
+    };
+  }, []);
+
+  const zoneNames = [
+    'Banana Store',
+    'Lululime',
+    'Victoria',
+    'PayMore',
+    'StudyStart',
+    'HandLocker',
+    'Orange Republic',
+  ];
+
+  const zoneColors = {
+    ok: 'text-green-400',
+    caution: 'text-yellow-400',
+    danger: 'text-red-400',
+  };
 
   return (
     <main className="flex min-h-screen flex-col bg-gradient-to-b from-black to-slate-900 text-white">
@@ -50,8 +155,8 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Canvas
             className="h-full w-full"
-            camera={{position: [0, 50, 5], fov: 45}}
-            style={{touchAction: 'none'}} // ensure drag works on touch
+            camera={{ position: [0, 50, 5], fov: 45 }}
+            style={{ touchAction: 'none' }} // ensure drag works on touch
           >
             <ambientLight intensity={0.5} />
             <spotLight
@@ -63,8 +168,8 @@ export default function Home() {
             <Suspense fallback={null}>
               <PresentationControls
                 global
-                config={{mass: 2, tension: 500}}
-                snap={{mass: 4, tension: 300}}
+                config={{ mass: 2, tension: 500 }}
+                snap={{ mass: 4, tension: 300 }}
                 rotation={[0, 0.3, 0]}
                 polar={[-Math.PI / 3, Math.PI / 3]}
                 azimuth={[-Math.PI / 1.4, Math.PI / 2]}

@@ -15,7 +15,8 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 
 <li>LLaMA LLM to classify and interpret incident types, user intent, and natural language prompts.</li>
 
-Supabase to handle authentication, real-time data storage, and threat logs.
+<li>Supabase to handle authentication, real-time data storage, and threat logs.</li>
+</ul>
 
 ## 🧱**Challenges we ran into**
 <ul>

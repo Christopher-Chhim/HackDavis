@@ -1,4 +1,4 @@
-## **SentinelAI**
+## 🛡️ **SentinelAI**
 SentinelAI is a real-time autonomous threat detection and response system designed for high-traffic public spaces like schools, malls, and stadiums. In crisis scenarios such as active shootings, fires, or other threats, SentinelAI minimizes response time by detecting incidents, initiating lockdowns, and coordinating emergency actions autonomously—when every second counts.
 
 ## 🧠 **Inspiration**
@@ -42,7 +42,7 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 <li>Delivered a vision for autonomous emergency systems that could genuinely scale to real-world applications.</li>
 </ul>
 
-## 📚**What we learned**
+## 📚 **What we learned**
 <ul>
 <li>How to combine multiple advanced technologies (LLMs, ML models, real-time databases, and 3D graphics) into a cohesive, performant application.</li>
 
@@ -53,7 +53,7 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 <li>How to simulate real-world emergencies in a programmable and controlled way for testing.</li>
 </ul>
 
-## 🚀**What's next for SentinelAI**
+## 🚀 **What's next for SentinelAI**
 <ul>
 <li>Edge deployment: Run threat detection locally on cameras to reduce latency.</li>
 

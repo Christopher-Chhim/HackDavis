@@ -26,37 +26,37 @@ interface DoorData {
 const storeData: StoreData[] = [
   // 7 stores
   {
-    name: 'Store 1',
+    name: 'Banana Store',
     position: [11, 0, -10],
     size: [8, 3, 10],
   },
   {
-    name: 'Store 2',
+    name: 'Lululime',
     position: [11, 0, 0],
     size: [8, 3, 10],
   },
   {
-    name: 'Store 3',
+    name: 'Victoria',
     position: [11, 0, 12.5],
     size: [8, 3, 5],
   },
   {
-    name: 'Store 4',
+    name: 'PayMore',
     position: [-6.25, 0, 12.5],
     size: [17.5, 3, 5],
   },
   {
-    name: 'Store 5',
+    name: 'StudyStart',
     position: [-11, 0, -11],
     size: [8, 3, 8],
   },
   {
-    name: 'Store 6',
+    name: 'HandLocker',
     position: [-8.75, 0, 1.5],
     size: [12.5, 3, 8],
   },
   {
-    name: 'Store 7',
+    name: 'Orange Republic',
     position: [0, 0, -4.75],
     size: [5, 3, 20.5],
   },
@@ -270,10 +270,10 @@ const Mall3D: React.FC = () => {
             />
             <Text3D
               font='/fonts/Inter_Regular.json'
-              position={[0, 3, -2.5]}
+              position={[0, 3, -3]}
               lineHeight={0.3}
-              size={1}
-              height={0.3}
+              size={0.75}
+              height={0.2}
               curveSegments={128}
               rotation={[0, (3 * Math.PI) / 2, 0]}
             >

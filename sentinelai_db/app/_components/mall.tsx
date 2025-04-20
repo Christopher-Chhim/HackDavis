@@ -1,6 +1,8 @@
-import React from "react";
-import { Canvas } from "@react-three/fiber";
+import React, { useRef } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 import { OrbitControls, Edges, Text3D } from "@react-three/drei";
+import * as THREE from "three";
 
 interface StoreData {
   name: string;
@@ -230,6 +232,8 @@ const hallwayData: HallwayData[] = [
 ];
 
 export default function MallCanvas({ doors, zones }: any) {
+  // Get the scene from the Three.js context
+  const sceneRef = useRef<THREE.Scene | null>(null);
   function determineStoreColor(status: string, index: number) {
     // Hardcoded neighbors for each store
     const neighbors = {
@@ -264,6 +268,38 @@ export default function MallCanvas({ doors, zones }: any) {
     }
   }
 
+  const exportToGLB = () => {
+    if (!sceneRef.current) return;
+    // Create a new GLTFExporter
+    const exporter = new GLTFExporter();
+
+    // Parse the scene and export as GLB
+    exporter.parse(
+      sceneRef.current,
+      (gltf: any) => {
+        // Create a blob from the exported data
+        const blob = new Blob([gltf as ArrayBuffer], {
+          type: "application/octet-stream",
+        });
+
+        // Create a download link
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "mall-scene.glb";
+
+        // Trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+      },
+      (error: any) => {
+        console.error("An error occurred during export:", error);
+      },
+      { binary: true } // Export as binary GLB format
+    );
+  };
   return (
     <div
       style={{
@@ -273,7 +309,31 @@ export default function MallCanvas({ doors, zones }: any) {
         overflow: "hidden",
       }}
     >
-      <Canvas camera={{ position: [-15, 25, 0], fov: 80, far: 500 }}>
+      <div
+        style={{ position: "absolute", top: "20px", right: "20px", zIndex: 10 }}
+      >
+        <button
+          onClick={exportToGLB}
+          style={{
+            padding: "10px 15px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontWeight: "bold",
+            boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+          }}
+        >
+          Export Scene
+        </button>
+      </div>
+      <Canvas
+        camera={{ position: [-15, 25, 0], fov: 80, far: 500 }}
+        onCreated={({ scene }) => {
+          sceneRef.current = scene;
+        }}
+      >
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
         <OrbitControls enableZoom={true} enablePan={false} />

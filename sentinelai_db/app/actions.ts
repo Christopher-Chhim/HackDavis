@@ -1,7 +1,7 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
-import { createClient } from "@/utils/supabase/server";
+import { encodedRedirect } from "@/app/utils/utils";
+import { createClient } from "@/app/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 

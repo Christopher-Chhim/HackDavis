@@ -19,10 +19,12 @@ from prompts import (
     user_prompt,
 )
 import json
+import os
+from supabase import create_async_client, AsyncClient
 
 
 class LlmClient:
-    def __init__(self):
+    async def __init__(self):
         """
         Initialize LLM client
 
@@ -30,6 +32,9 @@ class LlmClient:
         self.client = AsyncCerebras(
             api_key=os.environ["CEREBRAS_API_KEY"],
         )
+        url: str = os.environ.get("SUPABASE_URL")
+        key: str = os.environ.get("SUPABASE_KEY")
+        self.supabase: AsyncClient = create_async_client(url, key)
 
     def draft_begin_message(self):
         response = ResponseResponse(
@@ -135,7 +140,7 @@ class LlmClient:
                             },
                             "status": {
                                 "type": "string",
-                                "enum": ["ok", "caution", "danger"],
+                                "enum": ["ok", "danger"],
                                 "description": "The status to mark the zone with",
                             },
                         },

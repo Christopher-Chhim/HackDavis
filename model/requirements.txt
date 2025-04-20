@@ -1,9 +1,5 @@
-anaconda-anon-usage==0.5.0
 backports.tarfile==1.2.0
 brotli==1.0.9
-conda-anaconda-telemetry==0.1.2
-conda-anaconda-tos==0.1.2
-conda-content-trust==0.2.0
 importlib-metadata==8.0.0
 jaraco.collections==5.1.0
 matplotlib==3.10.1

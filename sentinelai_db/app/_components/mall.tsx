@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Edges, Text3D } from '@react-three/drei';
@@ -211,7 +213,6 @@ const doorsData: DoorData[] = [
 ];
 
 export default function MallCanvas({ doors, zones } : any) {
-  
   return (
     <div
       style={{

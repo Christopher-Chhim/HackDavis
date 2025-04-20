@@ -77,10 +77,10 @@ export default function Home() {
         </div>
 
         {/* 2) Text + buttons overlay */}
-        <div className="relative z-10 container mx-auto px-4 flex flex-col lg:flex-row items-center justify-center h-full pointer-events-none">
-          <div className="lg:w-1/2 mb-12 lg:mb-0 pointer-events-auto">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-600">
-              SentinelAI
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 container mx-auto px-2 flex flex-col lg:flex-row items-center justify-center w-[50%] h-[50%] pointer-events-none bg-black bg-opacity-50 rounded-xl">
+          <div className="mb-12 lg:mb-0 pointer-events-auto">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-white">
+              Sentinel AI
             </h1>
             <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-blue-100">
               AI-Powered Public Safety Orchestration
@@ -92,7 +92,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-blue-500 hover:bg-blue-950 text-white"
               >
                 Request Demo
               </Button>
@@ -109,9 +109,9 @@ export default function Home() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce z-10">
-          <p className="text-sm text-blue-300 mb-2">Scroll to explore</p>
-          <div className="w-6 h-10 border-2 border-blue-400 rounded-full flex justify-center">
-            <div className="w-1 h-2 bg-blue-400 rounded-full mt-2 animate-pulse"></div>
+          <p className="text-sm text-white mb-2">Scroll to explore</p>
+          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+            <div className="w-1 h-2 bg-white rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
@@ -257,7 +257,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
                 title: 'Educational Institutions',
@@ -300,7 +300,7 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 

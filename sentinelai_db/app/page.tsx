@@ -17,11 +17,10 @@ import {
   MessageSquare,
   Users,
 } from 'lucide-react';
-import { createClient, RealtimeChannel } from '@supabase/supabase-js';
-import MallCanvas from './_components/mall';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 // 3D Model component
-function Model(props) {
+function Model(props: any) {
   const { scene } = useGLTF('/model.glb');
 
   // Rotate the model slowly
@@ -44,8 +43,6 @@ export default function Home() {
   const [zones, setZones] = useState([]);
   let doorChannel: RealtimeChannel;
   let zoneChannel: RealtimeChannel;
-
-  
 
   const zoneNames = [
     'Banana Store',

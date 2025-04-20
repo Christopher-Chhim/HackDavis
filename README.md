@@ -1,13 +1,13 @@
 ## **SentinelAI**
 SentinelAI is a real-time autonomous threat detection and response system designed for high-traffic public spaces like schools, malls, and stadiums. In crisis scenarios such as active shootings, fires, or other threats, SentinelAI minimizes response time by detecting incidents, initiating lockdowns, and coordinating emergency actions autonomously—when every second counts.
 
-## 🧠**Inspiration**
+## 🧠 **Inspiration**
 Mass casualty events in public spaces often escalate in seconds, but responses can take minutes. After learning that over **70%** of casualties in mass public incidents occur within the first **5** minutes—and that most public venues still rely on slow, manual emergency protocols—we wanted to build a system that could respond faster than human reflexes. SentinelAI was born from the belief that real-time AI and automation can save lives when every second matters.
 
-## 🚨**What it does**
+## 🚨 **What it does**
 SentinelAI is an autonomous threat detection and crisis response platform. It uses machine learning to identify dangerous incidents (like active shootings or fires) in real time, then instantly coordinates responses such as triggering lockdowns, alerting emergency services, and displaying evacuation routes in a dynamic 3D map. It also logs incident data to a secure cloud database for analysis and reporting.
 
-## 🛠️**How we built it**
+## 🛠️ **How we built it**
 <ul>
 <li>Three.js to create a live 3D visualization of the environment, showing room layouts, cameras, and evacuation routes.</li>
 
@@ -18,7 +18,7 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 <li>Supabase to handle authentication, real-time data storage, and threat logs.</li>
 </ul>
 
-## 🧱**Challenges we ran into**
+## 🧱 **Challenges we ran into**
 <ul>
 <li>Integrating real-time models with 3D rendering posed performance challenges.</li>
 
@@ -30,7 +30,8 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 
 <li>Designing logic that respected our zone safety rules (e.g. avoiding dangerous areas, only using cautious ones when safe paths are blocked).</li>
 </ul>
-## 🏆**Accomplishments that we're proud of**
+
+## 🏆 **Accomplishments that we're proud of**
 <ul>
 <li>Built a fully functional prototype that integrates ML, LLM, and 3D rendering within 24 hours.</li>
 
@@ -40,6 +41,7 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 
 <li>Delivered a vision for autonomous emergency systems that could genuinely scale to real-world applications.</li>
 </ul>
+
 ## 📚**What we learned**
 <ul>
 <li>How to combine multiple advanced technologies (LLMs, ML models, real-time databases, and 3D graphics) into a cohesive, performant application.</li>
@@ -50,6 +52,7 @@ SentinelAI is an autonomous threat detection and crisis response platform. It us
 
 <li>How to simulate real-world emergencies in a programmable and controlled way for testing.</li>
 </ul>
+
 ## 🚀**What's next for SentinelAI**
 <ul>
 <li>Edge deployment: Run threat detection locally on cameras to reduce latency.</li>

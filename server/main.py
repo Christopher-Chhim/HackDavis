@@ -38,7 +38,7 @@ async def websocket_handler(websocket: WebSocket, call_id: str):
     try:
         await websocket.accept()
         client = LlmClient()
-
+        await client.setup_supabase()
         # Send configuration to the Retell server
         config = ConfigResponse(
             response_type="config",

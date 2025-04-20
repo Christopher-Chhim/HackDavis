@@ -21,10 +21,24 @@ from prompts import (
 import json
 import os
 from supabase import create_async_client, AsyncClient
+from retell import Retell
+
+retell = Retell(api_key=os.environ["RETELL_API_KEY"])
+zone_door_mapping = {
+    0: [0],
+    1: [1],
+    2: [2],
+    3: [3],
+    4: [8],
+    5: [7, 6, 9],
+    6: [4, 5, 6],
+    7: [5, 8, 7],
+    8: [0, 4, 1, 2, 3, 9],
+}
 
 
 class LlmClient:
-    async def __init__(self):
+    def __init__(self):
         """
         Initialize LLM client
 
@@ -34,7 +48,15 @@ class LlmClient:
         )
         url: str = os.environ.get("SUPABASE_URL")
         key: str = os.environ.get("SUPABASE_KEY")
-        self.supabase: AsyncClient = create_async_client(url, key)
+        self.supabase: AsyncClient = None
+
+    async def setup_supabase(self):
+        """
+        Initialize Supabase client asynchronously
+        """
+        url: str = os.environ.get("SUPABASE_URL")
+        key: str = os.environ.get("SUPABASE_KEY")
+        self.supabase = await create_async_client(url, key)
 
     def draft_begin_message(self):
         response = ResponseResponse(
@@ -101,9 +123,13 @@ class LlmClient:
                             "door_id": {
                                 "type": "integer",
                                 "description": "The ID of the door to open",
-                            }
+                            },
+                            "output": {
+                                "type": "string",
+                                "description": "The message back to the user after the door is opened",
+                            },
                         },
-                        "required": ["door_id"],
+                        "required": ["door_id", "output"],
                     },
                 },
             },
@@ -119,9 +145,13 @@ class LlmClient:
                             "door_id": {
                                 "type": "integer",
                                 "description": "The ID of the door to close",
-                            }
+                            },
+                            "output": {
+                                "type": "string",
+                                "description": "The message back to the user after the door is closed",
+                            },
                         },
-                        "required": ["door_id"],
+                        "required": ["door_id", "output"],
                     },
                 },
             },
@@ -138,13 +168,39 @@ class LlmClient:
                                 "type": "integer",
                                 "description": "The ID of the zone to mark",
                             },
+                            "output": {
+                                "type": "string",
+                                "description": "The message back to the user after the zone is marked",
+                            },
                             "status": {
                                 "type": "string",
                                 "enum": ["ok", "danger"],
                                 "description": "The status to mark the zone with",
                             },
                         },
-                        "required": ["zone_id", "status"],
+                        "required": ["zone_id", "output", "status"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "notify_emergency_responders",
+                    "strict": True,
+                    "description": "Notifies emergency responders (911) of a situation",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "situation": {
+                                "type": "string",
+                                "description": "The situation that is happening. Call this function when you have enough information to call 911.",
+                            },
+                            "output": {
+                                "type": "string",
+                                "description": "The message back to the user after the emergency responders are notified",
+                            },
+                        },
+                        "required": ["situation", "output"],
                     },
                 },
             },
@@ -166,14 +222,57 @@ class LlmClient:
         async for chunk in stream:
             if chunk.choices[0].delta.tool_calls:
                 # Handle function call
-                function_call = chunk.choices[0].delta.tool_calls
-                if function_call.name == "open_door":
-                    print(f"Opening door {function_call.arguments['door_id']}")
-                elif function_call.name == "close_door":
-                    print(f"Closing door {function_call.arguments['door_id']}")
-                elif function_call.name == "mark_zone":
-                    print(
-                        f"Marking zone {function_call.arguments['zone_id']} with status {function_call.arguments['status']}"
+                function_calls = chunk.choices[0].delta.tool_calls
+                print(f"Function calls: {function_calls}")
+                for function_call in function_calls:
+                    arguments = json.loads(function_call.function.arguments)
+
+                    if function_call.function.name == "open_door":
+                        print(f"Opening door {arguments['door_id']}")
+                        await self.supabase.table("doors").update({"open": True}).eq(
+                            "id", arguments["door_id"]
+                        ).execute()
+                    elif function_call.function.name == "close_door":
+                        print(f"Closing door {arguments['door_id']}")
+                        await self.supabase.table("doors").update({"open": False}).eq(
+                            "id", arguments["door_id"]
+                        ).execute()
+                    elif function_call.function.name == "mark_zone":
+                        print(
+                            f"Marking zone {arguments['zone_id']} with status {arguments['status']}"
+                        )
+                        await self.supabase.table("zones").update(
+                            {"status": arguments["status"]}
+                        ).eq("id", arguments["zone_id"]).execute()
+
+                        if arguments["status"] == "danger":
+                            doors_to_close = zone_door_mapping[arguments["zone_id"]]
+                            # Update all doors in a single call with an "in" filter
+                            await self.supabase.table("doors").update(
+                                {"open": False}
+                            ).in_("id", doors_to_close).execute()
+                        else:
+                            await self.supabase.table("doors").update(
+                                {"open": True}
+                            ).in_("id", doors_to_close).execute()
+
+                    elif function_call.function.name == "notify_emergency_responders":
+                        print(
+                            f"Notifying emergency responders of {arguments['situation']}"
+                        )
+                        retell.call.create_phone_call(
+                            from_number="+13192504307",
+                            to_number="+14152445168",
+                            retell_llm_dynamic_variables={
+                                "situation": arguments["situation"]
+                            },
+                        )
+
+                    yield ResponseResponse(
+                        response_id=response_id,
+                        content=arguments["output"],
+                        content_complete=True,
+                        end_call=False,
                     )
 
                 # Execute the function and handle the result

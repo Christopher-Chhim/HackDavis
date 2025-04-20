@@ -41,10 +41,10 @@ Top Right: Victoria (Zone Id: 2)
 Middle Left: Orange Republic (Zone Id: 6)
     - Door (Door Id: 4) north to corridor (Zone Id: 8)
     - Door (Door Id: 5) south to corridor (Zone Id: 7)
-    - Door (Door Id: 6) south to Hand Locker (Zone Id: 4)
-Bottom Left: Study Start (Zone Id: 5)
+    - Door (Door Id: 6) south to Hand Locker (Zone Id: 5)
+Bottom Left: Study Start (Zone Id: 4)
     - Door (Door Id: 7) north to corridor (Zone Id: 7)
-Bottom Middle: Hand Locker (Zone Id: 4)
+Bottom Middle: Hand Locker (Zone Id: 5)
     - Door (Door Id: 6) north to Orange Republic (Zone Id: 6)
     - Door (Door Id: 8) west to corridor (Zone Id: 7)
     - Door (Door Id: 9) east to corridor (Zone Id: 8)
@@ -64,8 +64,8 @@ Zone Mapping:
 - Zone Id: 1 is the LuLuLime
 - Zone Id: 2 is the Victoria
 - Zone Id: 3 is the Pay More
-- Zone Id: 4 is the Hand Locker
-- Zone Id: 5 is the Study Start
+- Zone Id: 4 is the Study Start
+- Zone Id: 5 is the Hand Locker
 - Zone Id: 6 is the Orange Republic
 - Zone Id: 7 is the corridor connecting the bottom left and bottom middle of the mall
 - Zone Id: 8 is the corridor connecting the top left, top right, and bottom right of the mall.

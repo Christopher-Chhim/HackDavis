@@ -15,6 +15,7 @@ from custom_types import (
 )
 from prompts import (
     system_prompt,
+    persistent_user_prompt,
     user_prompt,
 )
 import json
@@ -62,6 +63,13 @@ class LlmClient:
         for message in transcript_messages:
             prompt.append(message)
 
+        prompt.append(
+            {
+                "role": "user",
+                "content": persistent_user_prompt,
+            }
+        )
+
         if request.interaction_type == "reminder_required":
             prompt.append(
                 {
@@ -75,20 +83,78 @@ class LlmClient:
         """
         Define the available function calls for the assistant.
         """
-        return []
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": "open_door",
+                    "strict": True,
+                    "description": "Opens a door in the mall by its ID",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "door_id": {
+                                "type": "integer",
+                                "description": "The ID of the door to open",
+                            }
+                        },
+                        "required": ["door_id"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "close_door",
+                    "strict": True,
+                    "description": "Closes a door in the mall by its ID",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "door_id": {
+                                "type": "integer",
+                                "description": "The ID of the door to close",
+                            }
+                        },
+                        "required": ["door_id"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "mark_zone",
+                    "strict": True,
+                    "description": "Marks a zone with a specific status",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "zone_id": {
+                                "type": "integer",
+                                "description": "The ID of the zone to mark",
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": ["ok", "caution", "danger"],
+                                "description": "The status to mark the zone with",
+                            },
+                        },
+                        "required": ["zone_id", "status"],
+                    },
+                },
+            },
+        ]
 
     async def draft_response(self, request: ResponseRequiredRequest):
         # Initialize conversation with the user prompt.
         conversation = self.prepare_prompt(request)
         response_id = request.response_id
-        print("Functions:", self.prepare_functions())
-
 
         stream = await self.client.chat.completions.create(
-            model="llama-4-scout-17b-16e-instruct",
+            model="llama-3.3-70b",
             messages=conversation,
-            tools=[],
-            parallel_tool_calls=False,
+            tools=self.prepare_functions(),
+            parallel_tool_calls=True,
             stream=True,
         )
 
@@ -96,9 +162,15 @@ class LlmClient:
             if chunk.choices[0].delta.tool_calls:
                 # Handle function call
                 function_call = chunk.choices[0].delta.tool_calls
-                print(f"Function called: {function_call.name}")
-                print(f"Arguments: {function_call.arguments}")
-                
+                if function_call.name == "open_door":
+                    print(f"Opening door {function_call.arguments['door_id']}")
+                elif function_call.name == "close_door":
+                    print(f"Closing door {function_call.arguments['door_id']}")
+                elif function_call.name == "mark_zone":
+                    print(
+                        f"Marking zone {function_call.arguments['zone_id']} with status {function_call.arguments['status']}"
+                    )
+
                 # Execute the function and handle the result
                 # You'll need to implement this part based on your specific function
             elif chunk.choices[0].delta.content:

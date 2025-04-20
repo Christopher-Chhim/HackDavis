@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import {useState, useEffect, Suspense} from 'react'
-import {Canvas, useFrame} from '@react-three/fiber'
-import {useGLTF, Environment, PresentationControls} from '@react-three/drei'
-import {Button} from '@/components/ui/button'
-import {Card, CardContent} from '@/components/ui/card'
+import { useState, useEffect, Suspense } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useGLTF, Environment, PresentationControls } from '@react-three/drei';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Building,
   Radio,
@@ -16,31 +16,49 @@ import {
   Map,
   MessageSquare,
   Users,
-} from 'lucide-react'
+} from 'lucide-react';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 // 3D Model component
-function Model(props) {
-  const {scene} = useGLTF('/model.glb')
+function Model(props: any) {
+  const { scene } = useGLTF('/model.glb');
 
   // Rotate the model slowly
   useFrame((state) => {
-    scene.rotation.y = state.clock.getElapsedTime() * 0.1
-  })
+    scene.rotation.y = state.clock.getElapsedTime() * 0.1;
+  });
 
-  return <primitive object={scene} {...props} />
+  return <primitive object={scene} {...props} />;
 }
 
+interface Zone {
+  id: number;
+  status: 'ok' | 'caution' | 'danger';
+}
+
+
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0)
+  const [scrollY, setScrollY] = useState(0);
+  const [doors, setDoors] = useState([]);
+  const [zones, setZones] = useState([]);
+  let doorChannel: RealtimeChannel;
+  let zoneChannel: RealtimeChannel;
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
+  const zoneNames = [
+    'Banana Store',
+    'Lululime',
+    'Victoria',
+    'PayMore',
+    'StudyStart',
+    'HandLocker',
+    'Orange Republic',
+  ];
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  const zoneColors = {
+    ok: 'text-green-400',
+    caution: 'text-yellow-400',
+    danger: 'text-red-400',
+  };
 
   return (
     <main className="flex min-h-screen flex-col bg-gradient-to-b from-black to-slate-900 text-white">
@@ -50,8 +68,8 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Canvas
             className="h-full w-full"
-            camera={{position: [0, 50, 5], fov: 45}}
-            style={{touchAction: 'none'}} // ensure drag works on touch
+            camera={{ position: [0, 50, 5], fov: 45 }}
+            style={{ touchAction: 'none' }} // ensure drag works on touch
           >
             <ambientLight intensity={0.5} />
             <spotLight
@@ -63,8 +81,8 @@ export default function Home() {
             <Suspense fallback={null}>
               <PresentationControls
                 global
-                config={{mass: 2, tension: 500}}
-                snap={{mass: 4, tension: 300}}
+                config={{ mass: 2, tension: 500 }}
+                snap={{ mass: 4, tension: 300 }}
                 rotation={[0, 0.3, 0]}
                 polar={[-Math.PI / 3, Math.PI / 3]}
                 azimuth={[-Math.PI / 1.4, Math.PI / 2]}

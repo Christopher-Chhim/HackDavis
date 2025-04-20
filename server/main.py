@@ -7,6 +7,7 @@ from concurrent.futures import TimeoutError as ConnectionTimeoutError
 from retell import Retell
 from custom_types import ConfigResponse, ResponseRequiredRequest, ResponseResponse
 from agent import LlmClient
+from supabase import create_client, Client
 
 agent_id = "agent-d5bbe3d9-6f4a-496c-a455-9b6ef4b82b5d"
 
@@ -23,6 +24,12 @@ app.add_middleware(
 )
 
 retell = Retell(api_key=os.environ["RETELL_API_KEY"])
+client = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
+
+# Reset all doors to open
+client.table("doors").update({"open": True}).neq("id", -1).execute()
+client.table("zones").update({"status": "ok"}).neq("id", -1).execute()
+print("Reset all doors and zones to open")
 
 
 # WebSocket server for exchanging messages with the Retell server.

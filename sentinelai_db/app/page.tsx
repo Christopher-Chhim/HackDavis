@@ -90,10 +90,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={'flex flex-col items-center justify-center h-100px'}>
+    <div className={'flex flex-col items-center justify-center'}>
       {doors.length !== 0 && zones.length !== 0 ? (
         <>
-          <header className={'flex flex-col items-center justify-center'}>
+          <header className={'flex flex-col items-center justify-center h-[100px]'}>
             <h1>Mall 3D</h1>
             <p>A 3D mall simulation built with React Three Fiber</p>
           </header>

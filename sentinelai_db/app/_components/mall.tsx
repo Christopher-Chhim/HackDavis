@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Edges, Text3D } from '@react-three/drei';
 
@@ -20,6 +18,12 @@ interface WallData {
 interface DoorData {
   name: string;
   position: [number, number, number?];
+  size: [number, number, number?];
+  rotation?: [number, number, number];
+}
+
+interface HallwayData {
+  position: [number, number, number];
   size: [number, number, number?];
   rotation?: [number, number, number];
 }
@@ -212,7 +216,37 @@ const doorsData: DoorData[] = [
   },
 ];
 
-export default function MallCanvas({ doors, zones } : any) {
+const hallwayData: HallwayData[] = [
+  {
+    position: [0, 0, 0],
+    size: [30, 0.1, 30],
+    rotation: [0, 0, 0],
+  },
+  {
+    position: [-6.5, 0.25, -5],
+    size: [20, 0.1, 17],
+    rotation: [0, Math.PI / 2, 0],
+  },
+];
+
+export default function MallCanvas({ doors, zones }: any) {
+  // function determineStoreColor(status: string, neighbors: number[]) {
+  //   // Determine the color based on the status and neighbors
+  //   if (status === 'ok') {
+  //     if (neighbors.some((neighbor) => zones[neighbor].status === 'danger')) {
+  //       return 'yellow'; // Caution color if any neighbor is in danger
+  //     }
+  //     return 'green';
+  //   } else if (status === 'caution') {
+  //     return 'yellow';
+  //   } else if (status === 'danger') {
+  //     return 'red';
+  //   } else {
+  //     // Default color if status is not recognized
+  //     return 'green';
+  //   }
+  // }
+
   return (
     <div
       style={{
@@ -267,13 +301,7 @@ export default function MallCanvas({ doors, zones } : any) {
               args={[store.size[0], store.size[1], store.size[2] || 0.25]}
             />
             <meshStandardMaterial
-              color={
-                zones[index].status == 'ok'
-                  ? 'lime'
-                  : zones[index].status == 'caution'
-                    ? 'yellow'
-                    : 'red'
-              }
+              color={'lime'}
             />
             <Edges
               linewidth={3}
@@ -291,7 +319,7 @@ export default function MallCanvas({ doors, zones } : any) {
               rotation={[0, (3 * Math.PI) / 2, 0]}
             >
               {store.name}
-              <meshStandardMaterial color='orchid' />
+              <meshStandardMaterial color='orange' />
             </Text3D>
           </mesh>
         ))}
@@ -321,6 +349,28 @@ export default function MallCanvas({ doors, zones } : any) {
               threshold={15} // Display edges only when the angle between two faces exceeds this value (default=15 degrees)
               color='black'
             />
+          </mesh>
+        ))}
+
+        {/* Hallways */}
+        {hallwayData.map((hallway, index) => (
+          <mesh
+            key={index}
+            position={[
+              hallway.position[0],
+              hallway.position[1],
+              hallway.position[2] || 0,
+            ]}
+            rotation={[
+              hallway.rotation ? hallway.rotation[0] : 0,
+              hallway.rotation ? hallway.rotation[1] : 0,
+              hallway.rotation ? hallway.rotation[2] : 0,
+            ]}
+          >
+            <boxGeometry
+              args={[hallway.size[0], hallway.size[1], hallway.size[2]]}
+            />
+            <meshStandardMaterial color='white' />
           </mesh>
         ))}
       </Canvas>

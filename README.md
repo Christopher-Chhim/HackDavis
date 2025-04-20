@@ -2,7 +2,7 @@
 
 > ### **Real-Time Public Safety AI. Always Listening. Always Ready.**
 
-<img src="public/thumbnail.png" alt="SentinelAI Thumbnail"/>
+<img src="https://github.com/Christopher-Chhim/HackDavis/blob/main/thumbnail.png" alt="SentinelAI Thumbnail"/>
 
 <p align="center">
   Built with: <br/>

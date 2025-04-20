@@ -8,7 +8,7 @@ CREATE TABLE zones (
 -- Devices (microphones, speakers, doors, signage, etc.)
 CREATE TABLE devices (
   id SERIAL PRIMARY KEY,
-  zone_id INTEGER REFERENCES zones(id),
+  zone_id INTEGER REFERENCES zones(id) ON DELETE SET NULL,
   type TEXT NOT NULL,
   identifier TEXT UNIQUE NOT NULL,
   status TEXT DEFAULT 'active'
@@ -17,8 +17,8 @@ CREATE TABLE devices (
 -- Detected incidents (panic, gunshot, fire, etc.)
 CREATE TABLE incidents (
   id SERIAL PRIMARY KEY,
-  zone_id INTEGER REFERENCES zones(id),
-  device_id INTEGER REFERENCES devices(id),
+  zone_id INTEGER REFERENCES zones(id) ON DELETE SET NULL,
+  device_id INTEGER REFERENCES devices(id) ON DELETE SET NULL,
   type TEXT NOT NULL,
   detected_at TIMESTAMP DEFAULT NOW(),
   severity TEXT,
@@ -28,7 +28,8 @@ CREATE TABLE incidents (
 -- Actions taken by the system (lockdown, evacuation, etc.)
 CREATE TABLE actions (
   id SERIAL PRIMARY KEY,
-  incident_id INTEGER REFERENCES incidents(id),
+  incident_id INTEGER REFERENCES incidents(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
   action_type TEXT NOT NULL,
   performed_by TEXT, -- 'ai', 'human', etc.
   performed_at TIMESTAMP DEFAULT NOW(),

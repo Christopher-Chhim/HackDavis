@@ -1,67 +1,116 @@
-## 🛡️ **SentinelAI**
-SentinelAI is a real-time autonomous threat detection and response system designed for high-traffic public spaces like schools, malls, and stadiums. In crisis scenarios such as active shootings, fires, or other threats, SentinelAI minimizes response time by detecting incidents, initiating lockdowns, and coordinating emergency actions autonomously—when every second counts.
+# SentinelAI
 
-## 🧠 **Inspiration**
-Mass casualty events in public spaces often escalate in seconds, but responses can take minutes. After learning that over **70%** of casualties in mass public incidents occur within the first **5** minutes—and that most public venues still rely on slow, manual emergency protocols—we wanted to build a system that could respond faster than human reflexes. SentinelAI was born from the belief that real-time AI and automation can save lives when every second matters.
+> ### **Real-Time Public Safety AI. Always Listening. Always Ready.**
 
-## 🚨 **What it does**
-SentinelAI is an autonomous threat detection and crisis response platform. It uses machine learning to identify dangerous incidents (like active shootings or fires) in real time, then instantly coordinates responses such as triggering lockdowns, alerting emergency services, and displaying evacuation routes in a dynamic 3D map. It also logs incident data to a secure cloud database for analysis and reporting.
+<img src="https://github.com/Christopher-Chhim/HackDavis/blob/main/thumbnail.png" alt="SentinelAI Thumbnail"/>
 
-## 🛠️ **How we built it**
-<ul>
-<li>Three.js to create a live 3D visualization of the environment, showing room layouts, cameras, and evacuation routes.</li>
+<p align="center">
+  Built with: <br/>
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
+  <img src="https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=twilio&logoColor=white" />
+</p>
 
-<li>TensorFlow to power real-time object and threat detection from camera feeds.</li>
+---
 
-<li>LLaMA LLM to classify and interpret incident types, user intent, and natural language prompts.</li>
+### Inspiration
 
-<li>Supabase to handle authentication, real-time data storage, and threat logs.</li>
-</ul>
+In crowded public areas—schools, malls, stadiums—panic spreads fast, but response is slow. In crisis scenarios like shootings, fires, or terrorist threats, **over 70% of casualties occur within the first 5 minutes**, yet the average coordinated emergency response time is over **9 minutes**. Fewer than 5% of commercial spaces have real-time incident detection or autonomous orchestration tools.  
+**SentinelAI** was born to bridge this gap and turn every building into an always-on, hyper-responsive safety partner.
 
-## 🧱 **Challenges we ran into**
-<ul>
-<li>Integrating real-time models with 3D rendering posed performance challenges.</li>
+---
 
-<li>Synchronizing detection logic with LLM interpretations without lag.</li>
+### What It Does
 
-<li>Handling dynamic state updates in Three.js while keeping the scene interactive and accessible.</li>
+SentinelAI is your real-time public safety orchestration system. It continuously monitors live audio streams across a building, detects signs of panic or chaos, and instantly triggers a multi-agent AI response to guide and protect occupants.
 
-<li>Deploying TensorFlow models efficiently with minimal latency.</li>
+**Key Features:**
 
-<li>Designing logic that respected our zone safety rules (e.g. avoiding dangerous areas, only using cautious ones when safe paths are blocked).</li>
-</ul>
+- **Panic Detection Engine**  
+  Edge-deployed audio models (fine‑tuned Whisper + YAMNet) detect screams, glass shattering, stampedes, and fire alarms in real time.
 
-## 🏆 **Accomplishments that we're proud of**
-<ul>
-<li>Built a fully functional prototype that integrates ML, LLM, and 3D rendering within 24 hours.</li>
+- **Sentinel Superintendent LLM**  
+  A streaming vLLM + Llama 3.3 agent that speaks via intercom or phone, giving calm, context‑aware evacuation and lockdown instructions in <1 second.
 
-<li>Created a responsive and immersive 3D emergency map using Three.js.</li>
+- **Building Integration**  
+  Direct control over smart doors, alarms, digital signage, and lights through simulated IoT APIs.
 
-<li>Designed a threat classification pipeline that combines LLaMA and TensorFlow with real-time results.</li>
+- **Multi‑Zone Awareness**  
+  Coordinate different actions in separate zones (e.g., lockdown in Zone A, evacuation in Zone B).
 
-<li>Delivered a vision for autonomous emergency systems that could genuinely scale to real-world applications.</li>
-</ul>
+- **Human‑in‑the‑Loop Panel**  
+  Security staff can override actions and monitor system state via a central 3D dashboard built with Next.js & Three.js.
 
-## 📚 **What we learned**
-<ul>
-<li>How to combine multiple advanced technologies (LLMs, ML models, real-time databases, and 3D graphics) into a cohesive, performant application.</li>
+---
 
-<li>The importance of latency-aware design in critical systems.</li>
+### Challenges We Ran Into
 
-<li>How human-centric design and AI can complement each other in high-stakes scenarios.</li>
+- **Ultra‑Low Latency**  
+  Achieving sub‑second end‑to‑end detection and LLM response without sacrificing accuracy.
 
-<li>How to simulate real-world emergencies in a programmable and controlled way for testing.</li>
-</ul>
+- **Data Scarcity**  
+  Sourcing and fine‑tuning on real-world panic audio datasets to minimize false positives.
 
-## 🚀 **What's next for SentinelAI**
-<ul>
-<li>Edge deployment: Run threat detection locally on cameras to reduce latency.</li>
+- **IoT Simulation**  
+  Building and testing smart‑door and alarm integrations before full hardware deployment.
 
-<li>Voice-based interaction: Use real-time voice prompts for emergency escalation and status updates.</li>
+- **Real‑Time State Sync**  
+  Maintaining up‑to‑date building schematics and evacuation protocols via Supabase under heavy load.
 
-<li>Expanded threat detection: Add anomaly detection, fire recognition, and sound-based detection (e.g. gunshots).</li>
+---
 
-<li>Integration with emergency services: Auto-notify first responders based on threat type and location.</li>
+### Accomplishments We’re Proud Of
 
-<li>Public testing in simulated environments: Pilot SentinelAI in demo spaces to improve reliability and UX under pressure.</li>
-</ul>
+- **<500 ms Panic Detection**  
+  Tuned Whisper + YAMNet to reliably flag danger events in under half a second.
+
+- **Streaming LLM Superintendent**  
+  First‑of‑its‑kind real‑time evacuation guidance powered by vLLM + Cerebras API.
+
+- **Voice Interaction**  
+  Seamless phone‑call integration with Twilio & Retell, handling interruptions and priority overrides.
+
+- **Interactive 3D Dashboard**  
+  A clear, real‑time Command & Control UI visualizing zone statuses, door locks, and alerts.
+
+---
+
+### What We Learned
+
+- **Optimizing Multi‑Modal Pipelines**  
+  Tight coordination between audio models and LLMs is crucial for reliability.
+
+- **Trust Through Transparency**  
+  Human‑in‑the‑loop controls build confidence in automated systems.
+
+- **Edge‑First Design**  
+  Running everything locally or on the network edge reduces latency and privacy concerns.
+
+- **Simulation Accelerates Integration**  
+  Early mock‑IoT APIs helped us iterate faster without waiting for hardware.
+
+---
+
+### What’s Next for SentinelAI
+
+- **Heatmap & Camera Fusion** – Combine audio alerts with visual analytics.
+- **On‑Device Fail‑Safes** – Ensure uninterrupted operation during power or network outages.
+- **Multi‑Lingual Support** – Real‑time instructions in multiple languages.
+- **Mobile Companion App** – Push alerts and allow remote overrides from smartphones.
+
+---
+
+### 🧍 User‑Centric Focus
+
+This is not just technology—it’s reassurance. In emergencies, people need **clarity**, not chaos. SentinelAI becomes their trusted voice, guiding them through danger when human responders can’t reach every corner in time.
+
+---
+
+🔥 **The Hook**
+
+> “What if every building had its own Jarvis during a crisis?”  
+> With SentinelAI, your building doesn’t wait. It acts. It guides. It protects.

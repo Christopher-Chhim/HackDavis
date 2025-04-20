@@ -1,5 +1,3 @@
-Got it. I’ll dig into the U.S. market for SentinelAI, focusing on user groups like malls, schools, stadiums, and similar public venues. I’ll explore their current safety practices, procurement behavior, accessibility concerns, and pain points, especially around emergency response. I’ll also look into inclusive design and how different stakeholders might evaluate or adopt this kind of AI-driven solution. I’ll let you know once the findings are ready.
-
 # SentinelAI in Public Safety: U.S. Market and User Research (2022–2025)
 
 ## Decision-Maker Profiles and Roles

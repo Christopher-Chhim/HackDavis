@@ -33,23 +33,23 @@ Seven stores, two corridors, six exits.
 One corridor (Zone Id: 8) is a cross shape in the top right. One corridor (Zone Id: 7) is a L shape in the bottom left, connecting the left side of the mall to the bottom of the mall.
 
 Store Layout:
-Top Left: Banana Store (Zone Id: 0)]
+North West: Banana Store (Zone Id: 0)]
     - Door (Door Id: 0) south to corridor (Zone Id: 8)
-Top Middle: LuLuLime (Zone Id: 1)
+North Middle: LuLuLime (Zone Id: 1)
     - Door (Door Id: 1) south to corridor (Zone Id: 8)
-Top Right: Victoria (Zone Id: 2)
+North East: Victoria (Zone Id: 2)
     - Door (Door Id: 2) south to corridor (Zone Id: 8)
-Middle Left: Orange Republic (Zone Id: 6)
+South West: Orange Republic (Zone Id: 6)
     - Door (Door Id: 4) north to corridor (Zone Id: 8)
     - Door (Door Id: 5) south to corridor (Zone Id: 7)
     - Door (Door Id: 6) south to Hand Locker (Zone Id: 5)
-Bottom Left: Study Start (Zone Id: 4)
+South West: Study Start (Zone Id: 4)
     - Door (Door Id: 7) north to corridor (Zone Id: 7)
-Bottom Middle: Hand Locker (Zone Id: 5)
+South Middle: Hand Locker (Zone Id: 5)
     - Door (Door Id: 6) north to Orange Republic (Zone Id: 6)
     - Door (Door Id: 8) west to corridor (Zone Id: 7)
     - Door (Door Id: 9) east to corridor (Zone Id: 8)
-Bottom Right: Pay More (Zone Id: 3)
+South East: Pay More (Zone Id: 3)
     - Door (Door Id: 3) north to corridor (Zone Id: 8)
 
 Exit Layout:

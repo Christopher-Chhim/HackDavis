@@ -182,28 +182,28 @@ class LlmClient:
                     },
                 },
             },
-            {
-                "type": "function",
-                "function": {
-                    "name": "notify_emergency_responders",
-                    "strict": True,
-                    "description": "Notifies emergency responders (911) of a situation",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "situation": {
-                                "type": "string",
-                                "description": "The situation that is happening. Call this function when you have enough information to call 911.",
-                            },
-                            "output": {
-                                "type": "string",
-                                "description": "The message back to the user after the emergency responders are notified",
-                            },
-                        },
-                        "required": ["situation", "output"],
-                    },
-                },
-            },
+            # {
+            #     "type": "function",
+            #     "function": {
+            #         "name": "notify_emergency_responders",
+            #         "strict": True,
+            #         "description": "Notifies emergency responders (911) of a situation",
+            #         "parameters": {
+            #             "type": "object",
+            #             "properties": {
+            #                 "situation": {
+            #                     "type": "string",
+            #                     "description": "The situation that is happening. Call this function when you have enough information to call 911.",
+            #                 },
+            #                 "output": {
+            #                     "type": "string",
+            #                     "description": "The message back to the user after the emergency responders are notified",
+            #                 },
+            #             },
+            #             "required": ["situation", "output"],
+            #         },
+            #     },
+            # },
         ]
 
     async def draft_response(self, request: ResponseRequiredRequest):
@@ -252,21 +252,23 @@ class LlmClient:
                                 {"open": False}
                             ).in_("id", doors_to_close).execute()
                         else:
+                            doors_to_open = zone_door_mapping[arguments["zone_id"]]
+                            print(f"Opening doors {doors_to_open}")
                             await self.supabase.table("doors").update(
                                 {"open": True}
-                            ).in_("id", doors_to_close).execute()
+                            ).in_("id", doors_to_open).execute()
 
                     elif function_call.function.name == "notify_emergency_responders":
                         print(
                             f"Notifying emergency responders of {arguments['situation']}"
                         )
-                        retell.call.create_phone_call(
-                            from_number="+13192504307",
-                            to_number="+14152445168",
-                            retell_llm_dynamic_variables={
-                                "situation": arguments["situation"]
-                            },
-                        )
+                        # retell.call.create_phone_call(
+                        #     from_number="+13192504307",
+                        #     to_number="+14152445168",
+                        #     retell_llm_dynamic_variables={
+                        #         "situation": arguments["situation"]
+                        #     },
+                        # )
 
                     yield ResponseResponse(
                         response_id=response_id,
